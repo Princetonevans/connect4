@@ -1,0 +1,165 @@
+
+body {
+  background-image:
+	linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4)),
+	url(http://images.performgroup.com/di/library/sporting_news/55/6a/worldseriesliveblogftr1024jpg_v8yex19ekv2p1cwssn8hff8wd.jpg?w=1024&h=576&quality=100);
+	background-repeat: no-repeat;
+	background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Permanent Marker', cursive;
+}
+
+h1 {
+  text-align: center;
+  color: blue;
+  padding: 0px;
+  margin: 0px;
+}
+.clearfix {
+  clear: both;
+}
+
+.column-container {
+  width: 85px;
+  display: inline-block;
+  margin-top: 0px;
+}
+
+
+#spot-container {
+  width: 600px;
+  overflow: auto;
+  margin: 20px auto;
+  background: rgba(128, 128, 128, 0.4);
+  padding: 50px;
+  border-radius: 10px;
+}
+.column {
+  display: inline-block;
+}
+.one, .two, .three, .four, .five, .six {
+
+  margin: 10px;
+  height: 65px;
+  width: 65px;
+  padding: 5px;
+  font-size: 55px;
+  background: white;
+  border: 3px solid blue;
+  border-radius: 50%;
+}
+.circle {
+
+  margin: 10px;
+  height: 65px;
+  width: 65px;
+  padding: 5px;
+  font-size: 55px;
+  background: white;
+  border: 3px solid blue;
+  border-radius: 50%;
+}
+.bottom {
+
+  margin: 10px;
+  height: 65px;
+  width: 65px;
+  padding: 5px;
+  font-size: 55px;
+  background: white;
+  border: 3px solid blue;
+  border-radius: 50%;
+}
+
+.astros  {
+  padding: 5px;
+  margin: 10px;
+  height: 65px;
+  width: 65px;
+  font-size: 55px;
+  background-image:
+	url(https://upload.wikimedia.org/wikipedia/commons/0/01/Houston_astros_logo.png);
+	background-size: cover;
+  border: 3px solid #FF6600;
+  border-radius: 50%;
+}
+
+.dodgers  {
+
+  margin: 10px;
+  height: 65px;
+  width: 65px;
+  font-size: 55px;
+  background-image: url(http://www.everythingdoormats.com/images/products/los-angeles-dodgers-mlb-baseball-round-area-rug.jpg);
+  color: #666;
+  background-size: cover;
+  text-align: center;
+  border: 3px solid white;
+  border-radius: 50%;
+}
+
+.spotButton {
+
+  background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Circle_arrow_down_font_awesome.svg/500px-Circle_arrow_down_font_awesome.svg.png);
+  background-size: cover;
+  margin-left: 20px;
+  height: 60px;
+  width: 60px;
+  font-size: 55px;
+  border: 3px solid black;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.circle:hover {
+  cursor: pointer;
+  background: #66FFFF;
+}
+.square:hover {
+  cursor: pointer;
+  background: #66FFFF;
+}
+.spotButton:hover {
+  cursor: pointer;
+  background-color: green;
+}
+#reset:hover {
+  cursor: pointer;
+  background: #FF0000;
+}
+
+#reset {
+  border: 3px solid blue;
+  background: white;
+  color: blue;
+  width: 30%;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 30px;
+  bottom: 20px;
+  margin: auto;
+
+}
+#scoreboard-container {
+  text-align: center;
+  position: fixed;
+  left: 30px;
+  top: 100px;
+  width: 250px;
+  height: 100px;
+  border-radius: 10px;
+  background-color: rgba(99, 134, 145, 0.4);
+  color: white;
+  display: inline-block;
+  font-size: 22px;
+}
+#scoreboard-header {
+	font-size: 35px;
+	margin-top: 5px;
+}
+
+footer {
+  display: block;
+  text-align: center;
+  padding-top: 50px;
+}
