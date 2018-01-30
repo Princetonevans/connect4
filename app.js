@@ -1,161 +1,399 @@
-$(() => {
+// ===================================================================================
+// 																		Connect Four
+// ===================================================================================
 
-// console.log("Princeton");
+// ==============================================
+// 								Global Variables
+// ==============================================
+// $(() => {
+var rows = [];
+var columns = [];
 
-  let clicks = 0;
-  let alternate = true;
-  const $player1Win = $('<div>').addClass('player1Win')
-  const $player2Win = $('<div>').addClass('player2Win')
-  const $player1Turn = $('<div>').addClass('player1Turn')
-  const $player2Turn = $('<div>').addClass('player2Turn')
-//Heading
-const $h1 = $('<h1>').text('World Series Edition');
-    $('body').prepend($h1);
+var player;
+var totalMoves = 0;
 
-const $h2 = $('<h1>').text('Connect 4');
-    $('body').prepend($h2);
+// variables used in function that checks for lowest available spot in column and places piece there
+var $findColumn;
+var $currentColumn;
+var player1Color;
+var player2Color;
 
-//Game Board
-const $board = $('<div>').attr('id', 'spot-container');
-  $('body').append($board);
+// various jquery elements that are used to hide/show the elements later or insert/change HTML
+var $header = $("#header-container");
 
-//Column container
-const $columnCont1 = $('<div>').addClass('column-container')
-    $board.append($columnCont1);
+var $instructions = $("#instructions");
 
-const $columnCont2 = $('<div>').addClass('column-container')
-    $board.append($columnCont2);
+var $startButton = $("#start-button");
+var $startButtonContainer = $("#start-button-container");
 
-const $columnCont3 = $('<div>').addClass('column-container')
-    $board.append($columnCont3);
+var $playerOrderContainer = $("#player-order-container");
+var $playerOrder = $("#player-order");
+var $diceRollGif = $("#dice-roll");
 
-const $columnCont4 = $('<div>').addClass('column-container')
-    $board.append($columnCont4);
+// variables used to notify whose turn it is, notify name of winner, set up scoreboard
+var $nameInputContainer = $("#name-input-container");
+var $player1Input = $("#player1-input");
+var $player2Input = $("#player2-input");
+var $player1Name;
+var $player2Name;
+var $currentPlayer = $("#current-player");
+var currentPlayerName;
 
-const $columnCont5 = $('<div>').addClass('column-container')
-    $board.append($columnCont5);
+// variables used to control the game outcome output
+var winner;
+var $gameOutcomeContainer = $("#game-outcome-container");
+var $gameOutcome = $("#game-outcome");
 
-const $columnCont6 = $('<div>').addClass('column-container')
-    $board.append($columnCont6);
-
-const $columnCont7 = $('<div>').addClass('column-container')
-    $board.append($columnCont7);
-
-
-//Columns
-const $column = $('<div>').addClass('column');
-    $columnCont1.append($column);
-
-const $column2 = $('<div>').addClass('column');
-     $columnCont2.append($column2);
-
-const $column3 = $('<div>').addClass('column');
-    $columnCont3.append($column3);
-
-const $column4 = $('<div>').addClass('column');
-    $columnCont4.append($column4);
-
-const $column5 = $('<div>').addClass('column');
-    $columnCont5.append($column5);
-
-const $column6 = $('<div>').addClass('column');
-    $columnCont6.append($column6);
-
-const $column7 = $('<div>').addClass('column');
-    $columnCont7.append($column7);
+// scoreboard and "play again" setup
+var $scoreboard = $("#scoreboard-container");
+var player1wins = 0;
+var player2wins = 0;
+var $player1score = $("#player1-score");
+var $player2score = $("#player2-score");
+var $playAgain = $("#play-again-container");
 
 
-//Appending each spot to a column
- for (let i = 0; i < 6; i++) {
-  const $spot = $('<div>').addClass('circle');
-    $column.append($spot);
+// board size variables
+var $boardSizeContainer = $("#board-size-container");
+var $rowsInput = $("#rows-input");
+var $columnsInput = $("#columns-input");
+var $nextButton = $("#next-button");
 
-     }
-for (let i = 0; i < 6; i++) {
-  const $spot2 = $('<div>').addClass('circle');
-    $column2.append($spot2);
-        }
+// ===========================
+// 					Functions
+// ===========================
 
-for (let i = 0; i < 6; i++) {
-  const $spot3 = $('<div>').addClass('circle');
-    $column3.append($spot3);
-        }
+var $scoreboardContainer = $("#scoreboard-container");
+$($scoreboardContainer).after("<div id='spot-container'/>");
+var $spotContainer = $("#spot-container");
 
 
-for (let i = 0; i < 6; i++) {
-  const $spot4 = $('<div>').addClass('circle');
-   $column4.append($spot4);
-      }
+// creates board with variable rows/columns/buttons
+// sets click events on each button
+var createBoard = function(columns, rows) {
+	for (var i = 0; i < columns; i++) {
+		var $createColumnContainer = $("<div class='column-container'></div>");
+		$($spotContainer).append($createColumnContainer);
+		$($createColumnContainer).prepend("<button class='spot-button'>&darr;</button>");
 
-    for (let i = 0; i < 6; i++) {
-        const $spot5 = $('<div>').addClass('circle');
-          $column5.append($spot5);
-              }
+		var $createColumn = $("<div class='column'></div>");
+		$($createColumnContainer).append($createColumn);
 
-for (let i = 0; i < 6; i++) {
-  const $spot6 = $('<div>').addClass('circle');
-   $column6.append($spot6);
+		for (var j = 0; j < rows; j++) {
+			$($createColumn).append("<div class='spot'></div>");
+		}
+	}
+
+	var $spotButtons = $(".spot-button");
+	for (var i = 0; i < $spotButtons.length; i++) {
+		$($spotButtons[i]).click(placeLowestSpot);
+	}
+
+	var $columnElements = $(".column");
+	$($spotContainer).width(($columnElements.length * 70) + 90);
+	populateArrays();
+
 }
 
-for (let i = 0; i < 6; i++) {
-  const $spot7 = $('<div>').addClass('circle');
-   $column7.append($spot7);
-}
+// dynamically creates row and column arrays from HTML elements to allow simpler win checking later
+var populateArrays = function() {
+	$createColumn = $(".column");
 
-// footer
-const $footer = $('<footer>').attr('id', 'reset').text('Reset');
-    $board.append($footer);
+	for (var i = 0; i < $createColumn[0].children.length; i++) {
+		rows.push([]);
+		for (var j = 0; j < $createColumn.length; j++) {
+			rows[i].push($createColumn[j].children[i]);
+		}
+	}
 
 
-//Placing the chips at the bottom of the board first
-const playGame = (event) => {
-
-  const $columns = $(event.currentTarget).parent();
-      const $test = $columns.children();
-          for (let i = ($test.length - 1); i >= 0; i--) {
-              const $circle = $test.eq(i);
-
-    if(!$test.eq(i).attr('value')){
-      if(alternate === true){
-        $test.eq(i).addClass('astros').attr('value', 'clickedAstro').attr('player', 'Player 1');
-
-        $player1Turn.css('display', 'none');
-        $player2Turn.css('display', 'block');
-
-alternate = false;
-          return 0;
-
-        } else if(alternate === false) {
-            $test.eq(i).addClass('dodgers').attr('value', 'clickedDodger').attr('player', 'Player 2');
-
-        $player2Turn.css('display', 'none');
-        $player1Turn.css('display', 'block');
-
-        alternate = true;
-        return 0;
-    }
-  }
-}
+	for (var i = 0; i < $createColumn.length; i++) {
+		columns.push([]);
+		for (var j = 0; j < $createColumn[0].children.length; j++) {
+			columns[i].push($createColumn[i].children[j]);
+		}
+	}
 }
 
 
 
+var setUp = function() {
+	var $rowsValue = parseInt($rowsInput.val());
+	var $columnsValue = parseInt($columnsInput.val());
+	createBoard($columnsValue, $rowsValue);
+	$($boardSizeContainer).hide();
+	playerNames();
+}
+
+// initial setup function that clears the board and resets all settings changed during gameplay
+// called again in "play again" function
+var initialize = function() {
+	$($boardSizeContainer).show();
+	$($($header).children()[0]).css("font-size", "120px");
+	$($($header).children()[1]).css("font-size", "60px");
+	$($spotContainer).hide();
+	$($instructions).hide();
+	$($playerOrderContainer).hide();
+	$($currentPlayer).hide();
+	$($gameOutcomeContainer).hide();
+	$($nameInputContainer).hide();
+	$($startButtonContainer).hide();
+	$($playAgain).hide();
+	totalMoves = 0;
+	winner = null;
+
+	// removes color class from all spots that have one
+	var $createColumn = $(".column");
+	for (var i = 0; i < $createColumn.length; i++) {
+		for (var j = 0; j < $createColumn[i].children.length; j++) {
+			if ($($createColumn[i].children[j]).hasClass("astros")) {
+				$($createColumn[i].children[j]).removeClass("astros");
+			} else if ($($createColumn[i].children[j]).hasClass("dodgers")) {
+				$($createColumn[i].children[j]).removeClass("dodgers");
+			}
+		}
+	}
+}
+
+var playerNames = function() {
+	$($nameInputContainer).show();
+	$($startButtonContainer).show();
+}
 
 
-// Windows Onload
-$(() => {
 
-//Aternate turns and fills circles
-$('.circle').on('click', playGame);
+// I originally just had the "play again" button on a click event to run "initialize"
+// but I wanted a scoreboard, so now "play again" doesn't ask for player names,
+// it jumps straight to randomizing who goes first
+var playAgainSetup = function() {
+	$($scoreboard).show();
+	$($currentPlayer).html("");
+	initialize();
+	rollDice();
+}
+
+// function that randomizes the player order and tells the user(s) who is going first
+var rollDice = function() {
+	$boardSizeContainer.hide();
+	$($playerOrder).html("");
+	$($playerOrderContainer).show();
+	// $($diceRollGif).show();
+	$($startButtonContainer).hide();
+	$player1Name = $($player1Input).val();
+	$player2Name = $($player2Input).val();
+	$($nameInputContainer).hide();
+	if (Math.random() < 0.5) {
+		player1Color = "astros";
+		player2Color = "dodgers";
+		currentPlayerName = $player1Name;
+		setTimeout(function() {
+			$($playerOrder).html($player1Name + " goes first!");
+			// $($diceRollGif).hide();
+		}, 2000)
+		setTimeout(setGame, 4000)
+	} else if (Math.random() < 1) {
+		player1Color = "dodgers";
+		player2Color = "astros";
+		currentPlayerName = $player2Name;
+		setTimeout(function() {
+			$($playerOrder).html($player2Name + " goes first!")
+			$($diceRollGif).hide();
+		}, 2000)
+		setTimeout(setGame, 4000)
+	}
+
+}
+
+
+// function that gets called at the conclusion of the rollDice function; makes game header
+// smaller so that the user doesn't have to scroll down as much to see the whole board
+
+// also notifies whose turn it is
+var setGame = function() {
+	$($($header).children()[0]).css("font-size", "72px");
+	$($($header).children()[1]).css("font-size", "36px");
+	$($spotContainer).show();
+	$($instructions).show();
+	$($startButtonContainer).hide();
+	$($playerOrderContainer).hide();
+	$($currentPlayer).show();
+	$($currentPlayer).html(currentPlayerName + "'s turn!");
+}
+
+
+// checks for lowest free column spot and adds the class of the player whose turn it is
+var placeLowestSpot = function() {
+	if (currentPlayerName === $player1Name) {
+		currentPlayerName = $player2Name;
+	} else if (currentPlayerName === $player2Name) {
+		currentPlayerName = $player1Name;
+	}
+
+	// allows game to alternate turns for players
+	if (totalMoves % 2 === 0) {
+		player = "astros";
+	} else if (totalMoves % 2 === 1) {
+		player = "dodgers";
+	}
+
+	if (totalMoves < 42 && winner === null) {
+		setTimeout(function() {
+			$($currentPlayer).html(currentPlayerName + "'s turn!");
+		}, 100);
+
+		// Finds sibling of the button pressed (i.e. the column container)
+		$findColumn = $(this).siblings()[0];
+		$currentColumn = $($findColumn).children();
+
+		// reverse for loop; goes through the whole column starting from the bottom
+		// As soon as it finds a free spot, it adds the class and breaks out of the loop
+		for (var i = ($currentColumn.length - 1); i >= 0; i--) {
+			if (!($($currentColumn[i]).hasClass("astros")) && !($($currentColumn[i]).hasClass("dodgers"))) {
+				$($currentColumn[i]).addClass(player);
+				totalMoves += 1;
+
+				checkForWin();
+				break;
+			} else {
+			null;
+			}
+		}
+	}
+
+}
+
+var checkForWin = function() {
+	rowColumnWinCheck(rows);
+	rowColumnWinCheck(columns);
+	diagonalWinCheck(rows);
+
+	// i.e. if any of the above outcomes return true
+	if (winner != null) {
+		setTimeout(showGameOutcome, 200);
+	}
+}
+
+
+// checks if there are 4 elements that match up in rows and columns
+var rowColumnWinCheck = function(array) {
+	for (var i = 0; i < array.length; i++) {
+		for (var j = 0; j < (array[i].length - 3); j++) {
+			if ($(array[i][j]).hasClass(player1Color) && $(array[i][j+1]).hasClass(player1Color) && $(array[i][j+2]).hasClass(player1Color) && $(array[i][j+3]).hasClass(player1Color)) {
+				winner = $player1Name;
+				player1wins += 1;
+			} else if ($(array[i][j]).hasClass(player2Color) && $(array[i][j+1]).hasClass(player2Color) && $(array[i][j+2]).hasClass(player2Color) && $(array[i][j+3]).hasClass(player2Color)) {
+				winner = $player2Name;
+				player2wins += 1;
+			} else if (totalMoves >= 42) {
+				winner = "none";
+			}
+		}
+	}
+
+}
+
+
+// takes the row array as an argument because of the way the rows array visually matches the gameboard
+// 2 for loops - one for each "direction" of diagonals
+var diagonalWinCheck = function(array) {
+	$createColumn = $(".column");
+	for (var b = 0; b < ($createColumn[0].children.length - 3); b++) {
+		for (var c = 0; c < ($createColumn.length - 3); c++) {
+
+			if ($(array[b][c]).hasClass(player1Color) && $(array[b + 1][c + 1]).hasClass(player1Color) && $(array[b + 2][c + 2]).hasClass(player1Color) && $(array[b + 3][c + 3]).hasClass(player1Color)) {
+				winner = $player1Name;
+				player1wins += 1;
+			} else if ($(array[b][c]).hasClass(player2Color) && $(array[b + 1][c + 1]).hasClass(player2Color) && $(array[b + 2][c + 2]).hasClass(player2Color) && $(array[b + 3][c + 3]).hasClass(player2Color)) {
+				winner = $player2Name;
+				player1wins += 1;
+			} else if (totalMoves >= 42) {
+				winner = "none";
+			}
+		}
+
+		for (var d = ($createColumn.length - 1); d >= 3; d--) {
+
+			if ($(array[b][d]).hasClass(player1Color) && $(array[b + 1][d - 1]).hasClass(player1Color) && $(array[b + 2][d - 2]).hasClass(player1Color) && $(array[b + 3][d - 3]).hasClass(player1Color)) {
+				winner = $player1Name;
+				player1wins += 1;
+			} else if ($(array[b][d]).hasClass(player2Color) && $(array[b + 1][d - 1]).hasClass(player2Color) && $(array[b + 2][d - 2]).hasClass(player2Color) && $(array[b + 3][d - 3]).hasClass(player2Color)) {
+				winner = $player2Name;
+				player1wins += 1;
+			} else if (totalMoves >= 42) {
+				winner = "none";
+			}
+		}
+	}
+}
+
+// var diagonalWinCheck = function(array) {
+// 	$createColumn = $(".column");
+// 	for (var b = 0; b < ($createColumn[0].children.length - 3); b++) {
+// 		for (var c = 0; c < ($createColumn.length - 3); c++) {
+
+// 			console.log($(array[b][c]))
+// 			console.log($(array[b + 1][c + 1]))
+// 			console.log($(array[b + 2][c + 2]))
+// 			console.log($(array[b + 3][c + 3]))
+
+// 		}
+
+// 		for (var d = ($createColumn.length - 1); d >= 3; d--) {
+
+// 			console.log($(array[b][d]))
+// 			console.log($(array[b + 1][d - 1]))
+// 			console.log($(array[b + 2][d - 2]))
+// 			console.log($(array[b + 3][d - 3]))
+// 		}
+// 	}
+// }
 
 
 
+// things that happen once a winner is found
+var showGameOutcome = function() {
+	if (winner === $player1Name) {
+		$($currentPlayer).hide();
+		$($gameOutcomeContainer).show();
+		$($instructions).hide();
+		$($gameOutcome).html($player1Name + " wins!");
+		$($spotContainer).fadeOut("slow");
+		$($playAgain).show();
 
-//Reset button to start game over
-$('#reset').on('click',() =>{
-    location.reload()
+		// sets scoreboard text
+		$($player1score).html($player1Name + ": " + player1wins);
+		$($player2score).html($player2Name + ": " + player2wins);
+	} else if (winner === $player2Name) {
+		$($currentPlayer).hide();
+		$($gameOutcomeContainer).show();
+		$($instructions).hide();
+		$($gameOutcome).html($player2Name + " wins!");
+		$($spotContainer).fadeOut("slow");
+		$($playAgain).show();
+		$($player1score).html($player1Name + ": " + player1wins);
+		$($player2score).html($player2Name + ": " + player2wins);
+	} else if (winner === "none") {
+		$($currentPlayer).hide();
+		$($gameOutcomeContainer).show();
+		$($instructions).hide();
+		$($gameOutcome).html("Draw!");
+		$($spotContainer).fadeOut("slow");
+		$($playAgain).show();
+		$($player1score).html($player1Name + ": " + player1wins);
+		$($player2score).html($player2Name + ": " + player2wins);
+	}
+}
 
-});
-});
 
-});//
+// ===========================
+// 		 	 Event Listeners
+// ===========================
+
+$(document).ready(initialize);
+
+$($nextButton).click(setUp);
+
+$($startButton).click(rollDice);
+
+$($playAgain).click(playAgainSetup);
+// });

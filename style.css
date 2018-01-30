@@ -1,165 +1,257 @@
 
+
 body {
-  background-image:
-	linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4)),
+	font-family: 'Permanent Marker', cursive;
+	background-image:
+	linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
 	url(http://images.performgroup.com/di/library/sporting_news/55/6a/worldseriesliveblogftr1024jpg_v8yex19ekv2p1cwssn8hff8wd.jpg?w=1024&h=576&quality=100);
 	background-repeat: no-repeat;
-	background-size: cover;
-  background-attachment: fixed;
-  font-family: 'Permanent Marker', cursive;
+	background-size: 100%;
+    background-attachment: fixed;
+    color: blue;
 }
 
-h1 {
-  text-align: center;
-  color: blue;
-  padding: 0px;
-  margin: 0px;
-}
-.clearfix {
-  clear: both;
+@font-face {
+	font-family:'Permanent Marker', cursive;
+	src:url("CANDY.eot?") format("eot"),url("CANDY.woff") format("woff"),url("CANDY.ttf") format("truetype"),url("CANDY.svg#Candice") format("svg");
+	font-weight:normal;
+	font-style:normal;
 }
 
-.column-container {
-  width: 85px;
-  display: inline-block;
-  margin-top: 0px;
+#header-container {
+	text-align: center;
+	margin: 0 auto;
+	height: 100px;
+	color: blue;
+  padding-bottom: 20px;
+}
+
+#header1 {
+	text-align: center;
+	font-size: 120px;
+	text-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #c9ff00, 0 0 10px #c9ff00, 0 0 10px #c9ff00, 0 0 20px #c9ff00, 0 0 30px #c9ff00;
+}
+
+#header2 {
+	text-align: center;
+	font-size: 60px;
+	text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #c9ff00, 0 0 4px #c9ff00, 0 0 5px #c9ff00, 0 0 20px #c9ff00, 0 0 20px #c9ff00;
+	margin-top: -20px;
+}
+
+#instructions {
+	font-size: 30px;
+	display: none;
+	color: blue;
+}
+
+#board-size-container {
+	text-align: center;
+	margin: 110px auto 30px auto;
+	font-size: 30px;
+	display: none;
+}
+
+#board-size-text {
+	color: blue;
+}
+
+#rows-text-container {
+	margin-top: 20px;
+	display: inline-block;
+}
+
+#columns-text-container {
+	margin-top: 20px;
+	display: inline-block;
+}
+
+#next-button {
+	width: 200px;
+	height: 80px;
+	font-size: 50px;
+	font-weight: normal;
+	border-radius: 60px;
+	border: 5px solid #c9ff00;
+	box-shadow: 0 0 10px #c9ff00;
+	margin: 50px auto;
+	text-align: center;
+}
+
+#name-input-container {
+	text-align: center;
+	margin: 110px auto 0px auto;
+}
+
+#name-text {
+	font-size: 30px;
+	color: blue;
+	margin-bottom: 30px;
+}
+
+input {
+	height: 50px;
+	width: 200px;
+	margin: 0 50px;
+	font-family: 'Permanent Marker', cursive;;
+	font-size: 25px;
+	color: blue;
+	border-radius: 15px;
+	border: none;
+}
+
+#start-button-container {
+	text-align: center;
+	margin: 50px auto 0px auto;
+}
+
+#start-button {
+	width: 200px;
+	height: 80px;
+	font-size: 50px;
+	font-weight: normal;
+	border-radius: 60px;
+	border: 5px solid #c9ff00;
+	box-shadow: 0 0 10px #c9ff00;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#player-order-container {
+	text-align: center;
+	font-size: 60px;
+	margin: 120px auto 0px auto;
+	color: blue;
 }
 
 
-#spot-container {
-  width: 600px;
-  overflow: auto;
-  margin: 20px auto;
-  background: rgba(128, 128, 128, 0.4);
-  padding: 50px;
-  border-radius: 10px;
-}
-.column {
-  display: inline-block;
-}
-.one, .two, .three, .four, .five, .six {
 
-  margin: 10px;
-  height: 65px;
-  width: 65px;
-  padding: 5px;
-  font-size: 55px;
-  background: white;
-  border: 3px solid blue;
-  border-radius: 50%;
-}
-.circle {
-
-  margin: 10px;
-  height: 65px;
-  width: 65px;
-  padding: 5px;
-  font-size: 55px;
-  background: white;
-  border: 3px solid blue;
-  border-radius: 50%;
-}
-.bottom {
-
-  margin: 10px;
-  height: 65px;
-  width: 65px;
-  padding: 5px;
-  font-size: 55px;
-  background: white;
-  border: 3px solid blue;
-  border-radius: 50%;
-}
-
-.astros  {
-  padding: 5px;
-  margin: 10px;
-  height: 65px;
-  width: 65px;
-  font-size: 55px;
-  background-image:
-	url(https://upload.wikimedia.org/wikipedia/commons/0/01/Houston_astros_logo.png);
-	background-size: cover;
-  border: 3px solid #FF6600;
-  border-radius: 50%;
-}
-
-.dodgers  {
-
-  margin: 10px;
-  height: 65px;
-  width: 65px;
-  font-size: 55px;
-  background-image: url(http://www.everythingdoormats.com/images/products/los-angeles-dodgers-mlb-baseball-round-area-rug.jpg);
-  color: #666;
-  background-size: cover;
-  text-align: center;
-  border: 3px solid white;
-  border-radius: 50%;
-}
-
-.spotButton {
-
-  background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Circle_arrow_down_font_awesome.svg/500px-Circle_arrow_down_font_awesome.svg.png);
-  background-size: cover;
-  margin-left: 20px;
-  height: 60px;
-  width: 60px;
-  font-size: 55px;
-  border: 3px solid black;
-  text-align: center;
-  border-radius: 50%;
-}
-
-.circle:hover {
-  cursor: pointer;
-  background: #66FFFF;
-}
-.square:hover {
-  cursor: pointer;
-  background: #66FFFF;
-}
-.spotButton:hover {
-  cursor: pointer;
-  background-color: green;
-}
-#reset:hover {
-  cursor: pointer;
-  background: #FF0000;
-}
-
-#reset {
-  border: 3px solid blue;
-  background: white;
-  color: blue;
-  width: 30%;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 30px;
-  bottom: 20px;
-  margin: auto;
-
-}
 #scoreboard-container {
-  text-align: center;
-  position: fixed;
-  left: 30px;
-  top: 100px;
-  width: 250px;
-  height: 100px;
-  border-radius: 10px;
-  background-color: rgba(99, 134, 145, 0.4);
-  color: white;
-  display: inline-block;
-  font-size: 22px;
+	text-align: center;
+	position: fixed;
+	left: 50px;
+	top: 30px;
+	width: 250px;
+	height: 150px;
+	box-shadow: 0 0 20px #47646E;
+	border-radius: 90px;
+	background-color: rgba(99, 134, 145, 0.8);
+	color: white;
+	display: none;
+	font-size: 22px;
 }
+
 #scoreboard-header {
 	font-size: 35px;
 	margin-top: 5px;
 }
 
-footer {
-  display: block;
-  text-align: center;
-  padding-top: 50px;
+#spot-container {
+	text-align: center;
+	margin: 100px auto 0px auto;
+	background-color: rgba(99, 134, 145, 0.9);
+	padding: 75px 0px 20px 0px;
+	/*border: 5px solid white;*/
+	box-shadow: 0 0 20px #47646E;
+	border-radius: 50px;
+	display: none;
+}
+
+#current-player {
+	font-size: 30px;
+	color: #ff81bf;
+	animation: colorchange 200ms infinite;
+}
+
+/*#button-container {
+	width: 800px;
+	text-align: center;
+	display: block;
+	margin: 0 auto 0 -95px;
+}*/
+
+button {
+	padding-left: 10px;
+	padding-right: 10px;
+	font-family: 'Permanent Marker', cursive;;
+	font-size: 30px;
+	color: white;
+	text-shadow: 0 0 3px blue, 0 0 3px blue, 0 0 3px blue, 0 0 3px #fff, 0 0 4px #fff, 0 0 5px #fff, 0 0 10px #fff, 0 0 10px #fff;
+	background-color: blue;
+	height: 50px;
+	width: 50px;
+	border-radius: 100%;
+	border: 3px solid white;
+	margin-top: -50px;
+	margin-bottom: 20px;
+	text-align: center;
+	transition: all 0.7s ease;
+}
+
+button:hover {
+	background-color: #00FF00;
+}
+
+.column-container {
+	width: 70px;
+	display: inline-block;
+}
+
+.spot {
+	height: 60px;
+	width: 60px;
+	background-color: #e4ff7f;
+	border-radius: 100%;
+	box-shadow: 0 0 20px #47646E;
+	border: 2px solid black;
+	display: inline-block;
+	margin: 5px;
+}
+
+.astros {
+	background-image: url(https://upload.wikimedia.org/wikipedia/commons/0/01/Houston_astros_logo.png);
+	background-size: cover;
+	border: 2px solid white;
+}
+
+.dodgers {
+	background-image: url(http://www.everythingdoormats.com/images/products/los-angeles-dodgers-mlb-baseball-round-area-rug.jpg);
+	background-size: cover;
+	border: 2px solid white;
+}
+
+#game-outcome-container {
+	text-align: center;
+	margin: 50px auto;
+	font-size: 100px;
+	color: blue;
+	animation: color_change 150ms 10;
+}
+
+#play-again-container {
+	text-align: center;
+	margin: 0 auto;
+	display: none;
+}
+
+#play-again {
+	width: 250px;
+	height: 70px;
+	font-size: 35px;
+	font-weight: normal;
+	border-radius: 50px;
+	border: 5px solid #c9ff00;
+	box-shadow: 0 0 10px #c9ff00;
+}
+
+@keyframes color_change {
+	from {color: blue;}
+	to {color: white;}
+
+}
+
+@keyframes colorchange {
+	from {color: blue;}
+	to {color: white;}
+
 }
